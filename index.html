@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>AuthFlow</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div id="app">
+            <!-- ─── HEADER ─────────────────────────────────────────────── -->
+            <header>
+                <div class="logo">
+                    <div class="logo-dot"></div>
+                    Auth<span style="color: var(--text)">flow</span>
+                </div>
+                <div class="status-bar" id="header-status">
+                    <div class="status-dot" id="status-dot"></div>
+                    <span id="status-text">not authenticated</span>
+                </div>
+            </header>
+
+            <!-- ─── VIEW: LOGIN ────────────────────────────────────────── -->
+            <div id="view-login" class="view active">
+                <div class="auth-wrap">
+                    <p class="auth-eyebrow">// session init</p>
+                    <h1 class="auth-title">Sign <span>in.</span></h1>
+                    <div class="card">
+                        <div class="field">
+                            <label for="login-username">Username</label>
+                            <input
+                                id="login-username"
+                                type="text"
+                                placeholder="doejohn"
+                                autocomplete="username"
+                            />
+                        </div>
+                        <div class="field">
+                            <label for="login-password">Password</label>
+                            <input
+                                id="login-password"
+                                type="password"
+                                placeholder="••••••••"
+                                autocomplete="current-password"
+                            />
+                        </div>
+                        <button class="btn btn-primary" id="btn-login">
+                            <span class="btn-label">Login</span>
+                        </button>
+                    </div>
+                    <p class="switch-hint">
+                        No account?&nbsp;
+                        <button class="link" id="goto-register">
+                            Register here
+                        </button>
+                    </p>
+                </div>
+            </div>
+
+            <!-- ─── VIEW: REGISTER ────────────────────────────────────── -->
+            <div id="view-register" class="view">
+                <div class="auth-wrap">
+                    <p class="auth-eyebrow">// new user</p>
+                    <h1 class="auth-title">
+                        Create<br /><span>account.</span>
+                    </h1>
+                    <div class="card">
+                        <div class="field">
+                            <label for="reg-username">Username</label>
+                            <input
+                                id="reg-username"
+                                type="text"
+                                placeholder="doejohn"
+                                autocomplete="username"
+                            />
+                        </div>
+                        <div class="field">
+                            <label for="reg-email">Email</label>
+                            <input
+                                id="reg-email"
+                                type="email"
+                                placeholder="user@domain.com"
+                                autocomplete="email"
+                            />
+                        </div>
+                        <div class="field">
+                            <label for="reg-password">Password</label>
+                            <input
+                                id="reg-password"
+                                type="password"
+                                placeholder="min 8 chars"
+                                autocomplete="new-password"
+                            />
+                        </div>
+                        <div class="field">
+                            <label for="reg-role">Role</label>
+                            <div class="select-wrap">
+                                <select id="reg-role">
+                                    <option value="USER">USER</option>
+                                    <option value="ADMIN">ADMIN</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="btn-register">
+                            <span class="btn-label">Create Account</span>
+                        </button>
+                    </div>
+                    <p class="switch-hint">
+                        Already have an account?&nbsp;
+                        <button class="link" id="goto-login">Sign in</button>
+                    </p>
+                </div>
+            </div>
+
+            <!-- ─── VIEW: DASHBOARD ───────────────────────────────────── -->
+            <div id="view-dashboard" class="view">
+                <div class="dash-layout">
+                    <!-- sidebar -->
+                    <nav class="dash-sidebar">
+                        <span class="dash-sidebar-label">Navigation</span>
+                        <button
+                            class="sidebar-item active"
+                            data-section="profile"
+                        >
+                            <span class="sidebar-icon">◈</span> Profile
+                        </button>
+                        <button class="sidebar-item" data-section="raw">
+                            <span class="sidebar-icon">{ }</span> Raw Response
+                        </button>
+                        <span class="dash-sidebar-label">Account</span>
+                        <button class="sidebar-item" id="btn-logout">
+                            <span class="sidebar-icon">⇠</span>
+                            <span class="btn-label">Logout</span>
+                        </button>
+                    </nav>
+
+                    <!-- main content -->
+                    <main class="dash-main">
+                        <!-- Profile section -->
+                        <div id="section-profile" class="dash-section active">
+                            <div class="section-header">
+                                <h2 class="section-title">Your Profile</h2>
+                                <p class="section-sub" id="dash-sub">
+                                    Loading session data…
+                                </p>
+                            </div>
+
+                            <!-- user hero -->
+                            <div id="profile-hero"></div>
+
+                            <!-- info cards -->
+                            <div class="profile-grid" id="profile-cards"></div>
+
+                            <!-- refresh -->
+                            <div style="margin-top: 24px">
+                                <button class="btn btn-ghost" id="btn-refresh">
+                                    <span class="btn-label">↺ Refresh</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Raw JSON section -->
+                        <div id="section-raw" class="dash-section">
+                            <div class="section-header">
+                                <h2 class="section-title">Raw API Response</h2>
+                                <p class="section-sub">
+                                    GET /api/v1/users/current-user
+                                </p>
+                            </div>
+                            <div class="json-viewer" id="json-output">
+                                // waiting for data…
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+        <!-- #app -->
+
+        <!-- Toast container -->
+        <div id="toast-container"></div>
+        <script src="app.js"></script>
+    </body>
+</html>
